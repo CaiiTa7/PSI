@@ -71,12 +71,7 @@ cat << EOF > /var/www/html/login.php
       \$database = "login_page";
 
       \$conn = mysqli_connect(\$servername, \$dbusername, \$dbpassword, \$database);
-      
-      // Vérifie la connexion
-      if (!\$conn) {
-        die("Échec de la connexion : " . mysqli_connect_error());
-      }
-      
+     
       // Requête SQL pour vérifier si l'utilisateur existe
       \$sql = "SELECT * FROM utilisateurs WHERE username = '\$username' AND password = '\$password'";
 
@@ -238,9 +233,10 @@ mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE login_page; CREATE TABLE utilisa
 
 # Création d'un utilisateur ("Admin") rengoku avec le mot de passe souffle_DelaFlamme avec tous les privilèges sur la base de données login_page.
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE login_page; INSERT INTO utilisateurs (username, password) VALUES ('rengoku', 'souffle_DelaFlamme');"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'rengoku'@'localhost' IDENTIFIED BY 'souffle_DelaFlamme';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT ALL PRIVILEGES ON login_page.* TO 'rengoku'@'localhost';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT ALL PRIVILEGES ON login_page.utilisateurs TO 'rengoku'@'localhost';"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE login_page; GRANT SELECT, INSERT, UPDATE, DELETE ON utilisateurs TO 'rengoku'@'localhost';"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT, INSERT, UPDATE, DELETE ON utilisateurs TO 'rengoku'@'localhost';"
 
 # Ensuite insertion des utilisateurs avec leurs mots de passe.
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE login_page; INSERT INTO utilisateurs (username, password) VALUES ('hisoka', 'Bungee_Gum');"
