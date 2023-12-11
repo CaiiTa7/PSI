@@ -7,8 +7,11 @@ apt update
 apt upgrade -y
 
 # Création des utilisateurs
-useradd Rengoku -m -p souffle_delaFl@mme -s /bin/bash
-useradd killua -m -p gonforever -s /bin/bash
+adduser --disabled-password --gecos "" Rengoku
+echo "rengoku:souffle_DelaFlamme" | chpasswd
+
+adduser --disabled-password --gecos "" killua
+echo "killua:GonForever" | chpasswd
 
 # Installation des dépendances nécessaires pour la compilation
 apt install -y build-essential libpcre3-dev libssl-dev libapr1-dev libaprutil1-dev make cmake gcc software-properties-common ca-certificates lsb-release apt-transport-https 
@@ -49,21 +52,8 @@ rm -rf /tmp/httpd-2.4.49.tar.gz /tmp/httpd-2.4.49
 #########################
 # Ajout de la configuration pour la page de login par défaut
 cp /usr/local/apache2/conf/httpd.conf /usr/local/apache2/conf/httpd.conf.backup
+sed -i 's|DocumentRoot ".*"|DocumentRoot "/var/www/html"|' /usr/local/apache2/conf/httpd.conf
 
-cat << EOF > /usr/local/apache2/conf/httpd.conf
-# Ajout de la configuration pour la page de login par défaut
-ServerName localhost
-DocumentRoot "/var/www/html"
-<Directory "/var/www/html">
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-</Directory>
-EOF
-
-# Redémarrage d'Apache
-systemctl restart apache2.service
-##########
 # Création de la page de connexion login.php
 cat << EOF > /var/www/html/login.php
 <!DOCTYPE html>
@@ -186,7 +176,7 @@ cat << EOF > /var/www/html/index.html
 
   <h3 style="text-align: center;color:purple">Connexion</h3>
 
-  <!-- Hint : "Admin = Il est un utilisateur de ... de type transmutation. Son ... est basé sur les cartes à jouer ...... Passs = ? à toi de trouver :)-->
+  <!-- Hint : "(nom du user) = Il est un utilisateur du ... de type transmutation. Son ... est basé sur les cartes à jouer ...... Passs = ? à toi de trouver :)-->
 
 
 
@@ -292,16 +282,28 @@ EOF
 cat << EOF > /home/luffy/script_config.c
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <unistd.h>
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        printf("Usage: %s <command>\n", argv[0]);
-        return 1;
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <command>\n", argv[0]);
+        exit(EXIT_FAILURE);
     }
 
-    system(argv[1]);
+    // Exécute la commande en tant que root
+    if (setuid(0) != 0) {
+        perror("setuid");
+        exit(EXIT_FAILURE);
+    }
+
+    // Exécute la commande spécifiée en argument
+    if (system(argv[1]) == -1) {
+        perror("system");
+        exit(EXIT_FAILURE);
+    }
+
     return 0;
 }
+
 EOF
 ############################################
 # Compilation du programme vulnérable avec attribut setuid
