@@ -288,36 +288,22 @@ AllowGroups sshd
 EOF
 # Création du programme vulnérable
 # Insertion du code source du programme vulnérable
+######################################################
 cat << EOF > /home/luffy/script_config.c
 #include <stdio.h>
 #include <stdlib.h>
 
-void process_input(char *user_input) {
-    // Utilisation de la fonction system avec des paramètres
-    
-    char command[100];
-    sprintf(command, "echo %s", user_input);
-    
-    // Exécution de la commande système
-    system(command);
-}
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Usage: %s <command>\n", argv[0]);
+        return 1;
+    }
 
-int main() {
-    char input[50];
-
-    // Code pour obtenir l'entrée utilisateur
-    printf("Entrez un texte : ");
-    fgets(input, sizeof(input), stdin);
-
-    process_input(input);
-
+    system(argv[1]);
     return 0;
 }
 EOF
-
-chown root:root /home/luffy/script_config.c
-chmod +s /home/luffy/script_config.c
-
+############################################
 # Compilation du programme vulnérable avec attribut setuid
 gcc /home/luffy/script_config.c -o /home/luffy/script_config
 chown root:root /home/luffy/script_config
