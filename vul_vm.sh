@@ -44,7 +44,7 @@ tar -xzvf httpd-2.4.49.tar.gz
 cd httpd-2.4.49
 
 # Configuration, compilation et installation d'Apache
-./configure --prefix=/usr/local/apache2 --enable-mods-shared=all --enable-ssl --enable-so --enable-cgid
+./configure --prefix=/usr/local/apache2 --enable-mods-shared=all --enable-so --enable-cgid --enable-session
 make
 make install
 rm -rf /tmp/httpd-2.4.49.tar.gz /tmp/httpd-2.4.49
@@ -52,7 +52,6 @@ rm -rf /tmp/httpd-2.4.49.tar.gz /tmp/httpd-2.4.49
 #########################
 # Ajout de la configuration pour la page de login par défaut
 cp /usr/local/apache2/conf/httpd.conf /usr/local/apache2/conf/httpd.conf.backup
-sed -i 's|DocumentRoot ".*"|DocumentRoot "/var/www/html"|' /usr/local/apache2/conf/httpd.conf
 
 # Création de la page de connexion login.php
 cat << EOF > /var/www/html/login.php
@@ -80,8 +79,6 @@ cat << EOF > /var/www/html/login.php
       \$conn = mysqli_connect(\$servername, \$dbusername, \$dbpassword, \$database);
      
       // Requête SQL pour vérifier si l'utilisateur existe
-      \$sql = "SELECT * FROM utilisateurs WHERE username = '\$username' AND password = '\$password'";
-
       // Exécute la requête
       \$result = mysqli_query(\$conn,\$sql);
 
@@ -112,6 +109,8 @@ cat << EOF > /var/www/html/login.php
       alert("Bien essayé ... mais ... ce n'est pas ça !!!!");
     </script>
     Connexion non réussie /!\ !!!
+    <!-- Hint Pass : https://static.wikia.nocookie.net/hunterxhunter/images/8/8d/Hisoka%27s_favorite_gum.png/revision/latest?cb=20140823135632&path-prefix=fr-->
+
     <?php
   }
 
@@ -177,8 +176,6 @@ cat << EOF > /var/www/html/index.html
   <h3 style="text-align: center;color:purple">Connexion</h3>
 
   <!-- Hint : "(nom du user) = Il est un utilisateur du ... de type transmutation. Son ... est basé sur les cartes à jouer ...... Passs = ? à toi de trouver :)-->
-
-
 
   <form method="POST" action="login.php">
 
