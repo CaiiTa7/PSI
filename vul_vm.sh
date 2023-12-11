@@ -46,7 +46,24 @@ make
 make install
 rm -rf /tmp/httpd-2.4.49.tar.gz /tmp/httpd-2.4.49
 # Configuration vulnérabilité Apache
+#########################
+# Ajout de la configuration pour la page de login par défaut
+cp /usr/local/apache2/conf/httpd.conf /usr/local/apache2/conf/httpd.conf.backup
 
+cat << EOF > /usr/local/apache2/conf/httpd.conf
+# Ajout de la configuration pour la page de login par défaut
+ServerName localhost
+DocumentRoot "/var/www/html"
+<Directory "/var/www/html">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>
+EOF
+
+# Redémarrage d'Apache
+systemctl restart apache2.service
+##########
 # Création de la page de connexion login.php
 cat << EOF > /var/www/html/login.php
 <!DOCTYPE html>
