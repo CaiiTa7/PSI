@@ -14,7 +14,7 @@ adduser --disabled-password --gecos "" killua
 echo "killua:GonForever" | chpasswd
 
 adduser --disabled-password --gecos "" muten_roshi
-echo "muten_roshi:GonForever" | chpasswd
+echo "muten_roshi:kamehameha" | chpasswd
 
 # Installation des dépendances nécessaires pour la compilation
 apt install -y build-essential libpcre3-dev libssl-dev libapr1-dev libaprutil1-dev make cmake gcc software-properties-common ca-certificates lsb-release apt-transport-https 
