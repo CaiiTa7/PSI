@@ -1,21 +1,9 @@
+#!/bin/bash
+
 # Ajout de la configuration pour la page de login par défaut
 cp /usr/local/apache2/conf/httpd.conf /usr/local/apache2/conf/httpd.conf.backup
 
-cat << EOF > /usr/local/apache2/conf/httpd.conf
-# Ajout de la configuration pour la page de login par défaut
-ServerName localhost
-DocumentRoot "/var/www/html"
-<Directory "/var/www/html">
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-</Directory>
-EOF
-
-# Redémarrage d'Apache
-systemctl restart apache2.service
-
-# Création des fichiers de la page de connexion
+# Création de la page de connexion login.php
 cat << EOF > /var/www/html/login.php
 <!DOCTYPE html>
 
@@ -39,15 +27,8 @@ cat << EOF > /var/www/html/login.php
       \$database = "login_page";
 
       \$conn = mysqli_connect(\$servername, \$dbusername, \$dbpassword, \$database);
-      
-      // Vérifie la connexion
-      if (!\$conn) {
-        die("Échec de la connexion : " . mysqli_connect_error());
-      }
-      
+     
       // Requête SQL pour vérifier si l'utilisateur existe
-      \$sql = "SELECT * FROM utilisateurs WHERE username = '\$username' AND password = '\$password'";
-
       // Exécute la requête
       \$result = mysqli_query(\$conn,\$sql);
 
@@ -78,6 +59,8 @@ cat << EOF > /var/www/html/login.php
       alert("Bien essayé ... mais ... ce n'est pas ça !!!!");
     </script>
     Connexion non réussie /!\ !!!
+    <!-- Hint Pass : https://static.wikia.nocookie.net/hunterxhunter/images/8/8d/Hisoka%27s_favorite_gum.png/revision/latest?cb=20140823135632&path-prefix=fr-->
+
     <?php
   }
 
@@ -113,6 +96,7 @@ cat << EOF > /var/www/html/login.php
 EOF
 chmod 777 /var/www/html/login.php
 
+# Configuration d'Apache pour la page de login par défaut
 cat << EOF > /var/www/html/index.html
 <html>
 <meta charset="UTF-8">
@@ -141,9 +125,7 @@ cat << EOF > /var/www/html/index.html
 
   <h3 style="text-align: center;color:purple">Connexion</h3>
 
-  <!-- Hint : "Admin = Il est un utilisateur de ... de type transmutation. Son ... est basé sur les cartes à jouer ...... Passs = ? à toi de trouver :)-->
-
-
+  <!-- Hint : "(nom du user) = Il est un utilisateur du ... de type transmutation. Son ... est basé sur les cartes à jouer ...... Passs = ? à toi de trouver :)-->
 
   <form method="POST" action="login.php">
 
@@ -169,3 +151,5 @@ cat << EOF > /var/www/html/index.html
 </html>
 EOF
 chmod 777 /var/www/html/index.html
+
+systemctl restart apache2.service
