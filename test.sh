@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#########################
 # Ajout de la configuration pour la page de login par défaut
 cp /usr/local/apache2/conf/httpd.conf /usr/local/apache2/conf/httpd.conf.backup
 
@@ -152,4 +153,73 @@ cat << EOF > /var/www/html/index.html
 EOF
 chmod 777 /var/www/html/index.html
 
+# Installation de MariaDB
+apt install -y mariadb-server
+
+# Démarrage du service MariaDB
+systemctl start mariadb
+
+# Démarrage de MariaDB automatique au démarrage du système
+systemctl enable mariadb
+
+# Redémarrage d'Apache pour prendre en compte la nouvelle configuration
 systemctl restart apache2.service
+systemctl restart mariadb.service
+systemctl restart mysql.service
+
+# Création du programme vulnérable
+# Insertion du code source du programme vulnérable
+######################################################
+cat << EOF > /home/luffy/script_config.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <command>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    // Exécute la commande en tant que root
+    if (setuid(0) != 0) {
+        perror("setuid");
+        exit(EXIT_FAILURE);
+    }
+
+    // Exécute la commande spécifiée en argument
+    if (system(argv[1]) == -1) {
+        perror("system");
+        exit(EXIT_FAILURE);
+    }
+
+    return 0;
+}
+
+EOF
+############################################
+# Compilation du programme vulnérable avec attribut setuid
+gcc /home/luffy/script_config.c -o /home/luffy/script_config
+chown root:root /home/luffy/script_config
+chmod +s /home/luffy/script_config
+rm /home/luffy/script_config.c
+
+# Connection à distance mysql
+cat << EOF >> /etc/mysql/my.cnf
+[mysqld]
+bind-address = 0.0.0.0
+EOF
+
+# SSH
+cat << EOF >> /etc/ssh/sshd_config
+AllowUsers killua
+EOF
+# Network file for hisoka
+curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/raw/main/network_analyze.pcap --output /home/killua/network_analyze.pcap
+curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/blob/main/logo.png --output /home/killua/logo.png
+cat << EOF > /home/killua/coucou.txt
+U : 81cc336187cc054b1bf5bf9ad4a385d7f2c144ba33653b48e0d4408b2d27ea73
+P : png ?
+EOF
+## Effacer l'historique des commandes
+rm -f /home/luffy/.bash_history /home/killua/.bash_history /home/Rengoku/.bash_history /home/muten_roshi/.bash_history /root/.bash_history
+
