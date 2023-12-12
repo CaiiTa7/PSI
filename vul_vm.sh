@@ -82,7 +82,7 @@ cat << EOF > /var/www/html/login.php
       \$conn = mysqli_connect(\$servername, \$dbusername, \$dbpassword, \$database);
      
       // Requête SQL pour vérifier si l'utilisateur existe
-      \$conn = mysqli_connect(\$servername, \$dbusername, \$dbpassword, \$database);
+      \$sql = "SELECT * FROM utilisateurs WHERE username = '\$username' AND password = '\$password'";
       // Exécute la requête
       \$result = mysqli_query(\$conn,\$sql);
 
