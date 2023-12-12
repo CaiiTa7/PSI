@@ -287,10 +287,6 @@ systemctl restart apache2.service
 systemctl restart mariadb.service
 systemctl restart mysql.service
 
-cat << EOF >> /etc/ssh/sshd_config
-# Ajout de la configuration pour la connexion SSH
-AllowGroups sshd
-EOF
 # Création du programme vulnérable
 # Insertion du code source du programme vulnérable
 ######################################################
@@ -338,10 +334,11 @@ cat << EOF >> /etc/ssh/sshd_config
 AllowUsers killua
 EOF
 # Network file for hisoka
-curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/raw/main/network.pcap --output /home/hisoka/network_analyze.pcap
+curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/raw/main/network_analyze.pcap --output /home/killua/network_analyze.pcap
 curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/blob/main/logo.png --output /home/killua/logo.png
 cat << EOF > /home/killua/coucou.txt
 U : 81cc336187cc054b1bf5bf9ad4a385d7f2c144ba33653b48e0d4408b2d27ea73
 P : png ?
+EOF
 ## Effacer l'historique des commandes
 rm -f /home/luffy/.bash_history /home/killua/.bash_history /home/Rengoku/.bash_history /home/muten_roshi/.bash_history /root/.bash_history
