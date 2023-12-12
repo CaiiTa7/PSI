@@ -13,6 +13,9 @@ echo "rengoku:souffle_DelaFlamme" | chpasswd
 adduser --disabled-password --gecos "" killua
 echo "killua:GonForever" | chpasswd
 
+adduser --disabled-password --gecos "" muten_roshi
+echo "muten_roshi:GonForever" | chpasswd
+
 # Installation des dépendances nécessaires pour la compilation
 apt install -y build-essential libpcre3-dev libssl-dev libapr1-dev libaprutil1-dev make cmake gcc software-properties-common ca-certificates lsb-release apt-transport-https 
 
@@ -247,6 +250,7 @@ mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE login_page; INSERT INTO utilisat
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'hisoka'@'localhost' IDENTIFIED BY 'Bungee_Gum';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT USAGE ON login_page.* TO 'hisoka'@'localhost';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT ON login_page.utilisateurs TO 'hisoka'@'localhost';"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT ALL PRIVILEGES ON *.* TO 'hisoka'@'%' IDENTIFIED BY 'Bungee_Gum' WITH GRANT OPTION;"
 
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE login_page; INSERT INTO utilisateurs (username, password) VALUES ('sasuke', 'sharing@n');"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'sasuke'@'localhost' IDENTIFIED BY 'sharing@n';"
@@ -262,6 +266,20 @@ mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE login_page; INSERT INTO utilisat
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'Son_Goku'@'localhost' IDENTIFIED BY 'Bouhhle2_cristal4';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT USAGE ON login_page.* TO 'Son_Goku'@'localhost';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT ON login_page.utilisateurs TO 'Son_Goku'@'localhost';"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "FLUSH PRIVILEGES;"
+
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE DATABASE ssh;"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE ssh; CREATE TABLE utilisateurs (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);"
+
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE ssh; INSERT INTO utilisateurs (username, password) VALUES ('muten_roshi', 'Kamehameha');"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'muten_roshi'@'localhost' IDENTIFIED BY 'Kamehameha';"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT USAGE ON ssh.* TO 'muten_roshi'@'localhost';"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT ON ssh.utilisateurs TO 'muten_roshi'@'localhost';"
+
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE ssh; INSERT INTO utilisateurs (username, password) VALUES ('killua', 'gonforever');"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'killua'@'localhost' IDENTIFIED BY 'gonforever';"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT USAGE ON ssh.* TO 'killua'@'localhost';"
+mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT ON ssh.utilisateurs TO 'killua'@'localhost';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "FLUSH PRIVILEGES;"
 
 # Redémarrage d'Apache pour prendre en compte la nouvelle configuration
@@ -309,5 +327,21 @@ chown root:root /home/luffy/script_config
 chmod +s /home/luffy/script_config
 rm /home/luffy/script_config.c
 
+# Connection à distance mysql
+cat << EOF >> /etc/mysql/my.cnf
+[mysqld]
+bind-address = 0.0.0.0
+EOF
+
+# SSH
+cat << EOF >> /etc/ssh/sshd_config
+AllowUsers killua
+EOF
+# Network file for hisoka
+curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/raw/main/network.pcap --output /home/hisoka/network_analyze.pcap
+curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/blob/main/logo.png --output /home/killua/logo.png
+cat << EOF > /home/killua/coucou.txt
+U : 81cc336187cc054b1bf5bf9ad4a385d7f2c144ba33653b48e0d4408b2d27ea73
+P : png ?
 ## Effacer l'historique des commandes
 rm -f /home/luffy/.bash_history /home/killua/.bash_history /home/Rengoku/.bash_history /home/muten_roshi/.bash_history /root/.bash_history
