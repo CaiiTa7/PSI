@@ -268,20 +268,6 @@ mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT USAGE ON login_page.* TO 'Son_
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT ON login_page.utilisateurs TO 'Son_Goku'@'localhost';"
 mysql -u root -pCeci3stlem0t2passeR0ùt -e "FLUSH PRIVILEGES;"
 
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE DATABASE ssh;"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE ssh; CREATE TABLE utilisateurs (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);"
-
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE ssh; INSERT INTO utilisateurs (username, password) VALUES ('muten_roshi', 'Kamehameha');"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'muten_roshi'@'localhost' IDENTIFIED BY 'Kamehameha';"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT USAGE ON ssh.* TO 'muten_roshi'@'localhost';"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT ON ssh.utilisateurs TO 'muten_roshi'@'localhost';"
-
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "USE ssh; INSERT INTO utilisateurs (username, password) VALUES ('killua', 'gonforever');"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "CREATE USER 'killua'@'localhost' IDENTIFIED BY 'gonforever';"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT USAGE ON ssh.* TO 'killua'@'localhost';"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "GRANT SELECT ON ssh.utilisateurs TO 'killua'@'localhost';"
-mysql -u root -pCeci3stlem0t2passeR0ùt -e "FLUSH PRIVILEGES;"
-
 # Redémarrage d'Apache pour prendre en compte la nouvelle configuration
 systemctl restart apache2.service
 systemctl restart mariadb.service
