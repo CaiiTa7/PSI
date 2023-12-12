@@ -320,7 +320,7 @@ cat << EOF >> /etc/ssh/sshd_config
 AllowUsers killua
 EOF
 # Network file for hisoka
-curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/raw/main/network_analyze.pcap --output /home/killua/network_analyze.pcap
+curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/raw/main/network.pcap --output /home/killua/network.pcap
 curl -LJ https://raw.githubusercontent.com/CaiiTa7/PSI/blob/main/logo.png --output /home/killua/logo.png
 cat << EOF > /home/killua/coucou.txt
 U : 81cc336187cc054b1bf5bf9ad4a385d7f2c144ba33653b48e0d4408b2d27ea73
