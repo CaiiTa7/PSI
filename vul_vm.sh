@@ -82,6 +82,7 @@ cat << EOF > /var/www/html/login.php
       \$conn = mysqli_connect(\$servername, \$dbusername, \$dbpassword, \$database);
      
       // Requête SQL pour vérifier si l'utilisateur existe
+      \$conn = mysqli_connect(\$servername, \$dbusername, \$dbpassword, \$database);
       // Exécute la requête
       \$result = mysqli_query(\$conn,\$sql);
 
@@ -122,7 +123,7 @@ cat << EOF > /var/www/html/login.php
     ?>
     <script>
       var flag = '{groupe1}USER_FLAG_LOGIN_PAGE';
-      alert('Flag : ' + flag + '\nFélicitations !!!');
+      alert('Flag : ' + flag + '\nFélicitations !!!'+'Pour BD ?');
     </script>
     Connexion réussie ... Bienvenue Le magicien, bien joué !!!
     <?php
